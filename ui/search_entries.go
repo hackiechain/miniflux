@@ -6,7 +6,7 @@ package ui  // import "miniflux.app/ui"
 
 import (
 	"net/http"
-
+	"net/url"
 	"miniflux.app/http/request"
 	"miniflux.app/http/response/html"
 	"miniflux.app/http/route"
@@ -24,6 +24,7 @@ func (c *Controller) ShowSearchEntries(w http.ResponseWriter, r *http.Request) {
 	}
 
 	searchQuery := request.QueryParam(r, "q", "")
+        searchQuery, _ = url.QueryUnescape(searchQuery)
 	offset := request.QueryIntParam(r, "offset", 0)
 	builder := c.store.NewEntryQueryBuilder(user.ID)
 	builder.WithSearchQuery(searchQuery)
